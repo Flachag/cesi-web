@@ -8,7 +8,7 @@ use Slim\Container;
  * Class Middleware
  * @package app\middlewares
  */
-class Middleware {
+abstract class Middleware {
 
     /**
      * Slim's Container
