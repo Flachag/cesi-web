@@ -70,6 +70,7 @@ $app->group('', function (App $app) {
     $app->get('/account', UserController::class . ':account')->setName('app.account');
     $app->post('/account', UserController::class . ':updateAccount')->setName('app.account.submit');
     $app->post('/account/password', UserController::class . ':updatePassword')->setName('app.account.password.submit');
+    $app->get('/logout', UserController::class . ':logout')->setName('app.logout');
 });
 
 $app->group('/admin', function(App $app){
