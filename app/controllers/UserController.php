@@ -73,11 +73,11 @@ class UserController extends Controller{
             $user->password = password_hash($password, PASSWORD_DEFAULT);
             $user->save();
 
-            $this->flash->addMessage('success', "L'utilisateur a été ajouté");
-            $response = $response->withRedirect($this->router->pathFor('login'));
+            $this->flash->addMessage('success', "Inscription validée, vous pouvez vous connecter.");
+            $response = $response->withRedirect($this->router->pathFor('app.login'));
         } catch (\Exception $e){
             $this->flash->addMessage('error', $e->getMessage());
-            $response = $response->withRedirect($this->router->pathFor("register"));
+            $response = $response->withRedirect($this->router->pathFor("app.register"));
         }
         return $response;
     }
