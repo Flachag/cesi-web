@@ -37,7 +37,7 @@ class UserController extends Controller{
     }
 
     public function register(Request $request, Response $response, array $args): Response {
-        $this->render($response, 'templates/pages/register.twig');
+        $this->view->render($response, 'pages/register.twig');
         return $response;
     }
 
