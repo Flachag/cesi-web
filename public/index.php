@@ -57,5 +57,9 @@ $app->get("/", AppController::class . ':home')->setName("app.home");
 $app->get("/register", UserController::class . ':register')->setName("app.register");
 $app->get("/login", UserController::class . ':login')->setName("app.login");
 $app->post("/login", UserController::class . ':postLogin')->setName("app.login.submit");
-$app->post("/postRegister", UserController::class . ':postRegister')->setName("app.postRegister");
+$app->post("/register", UserController::class . ':postRegister')->setName("app.register.submit");
+
+$app->group('', function (App $app) {
+    $app->get('/account', UserController::class . ':account')->setName('app.acount');
+});
 $app->run();
