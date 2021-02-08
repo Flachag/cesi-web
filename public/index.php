@@ -67,5 +67,7 @@ $app->post("/register", UserController::class . ':postRegister')->setName("app.r
 
 $app->group('', function (App $app) {
     $app->get('/account', UserController::class . ':account')->setName('app.account');
+    $app->post('/account', UserController::class . ':updateAccount')->setName('app.account.submit');
+    $app->post('/account/password', UserController::class . ':updatePassword')->setName('app.account.password.submit');
 });
 $app->run();

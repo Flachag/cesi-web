@@ -12,6 +12,56 @@ use Slim\Http\Response;
 
 class UserController extends Controller{
 
+
+    public function updateAccount(Request $request, Response $response, array $args): Response {
+        try {
+            $firstname = filter_var($request->getParsedBodyParam('firstname'), FILTER_SANITIZE_STRING);
+            $lastname = filter_var($request->getParsedBodyParam('lastname'), FILTER_SANITIZE_STRING);
+            $email = filter_var($request->getParsedBodyParam('email'), FILTER_SANITIZE_EMAIL);
+            $address = filter_var($request->getParsedBodyParam('address'), FILTER_SANITIZE_STRING);
+            $user = Auth::user();
+
+            if ($user->email != $email) {
+                if (User::where('email', $email)->exists()) throw new Exception("Cet email est déjà utilisée.");
+            }
+
+            $user->lastname = $lastname;
+            $user->firstname = $firstname;
+            $user->address = $address;
+            $user->email = $email;
+            $user->save();
+
+            $this->flash->addMessage('success', "Votre modification a été enregistrée");
+            return $response = $response->withRedirect($this->router->pathFor('app.account'));
+        } catch (Exception $e) {
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor("app.account"));
+        }
+        return $response;
+    }
+
+    public function updatePassword(Request $request, Response $response, array $args): Response {
+        try {
+            $password = filter_var($request->getParsedBodyParam('password'), FILTER_SANITIZE_STRING);
+            $newpassword = filter_var($request->getParsedBodyParam('newpassword'), FILTER_SANITIZE_STRING);
+            $newpassword_conf = filter_var($request->getParsedBodyParam('newpassword_conf'), FILTER_SANITIZE_STRING);
+            if (mb_strlen($newpassword, 'utf8') < 8) throw new Exception("Votre nouveau mot de passe doit contenir au moins 8 caractères.");
+            if ($newpassword != $newpassword_conf) throw new Exception("La confirmation du mot de passe n'est pas bonne.");
+            if (!password_verify($password, Auth::user()->password)) throw new Exception("Le mot de passe actuel est incorrect.");
+
+            $user = Auth::user();
+            $user->password = password_hash($newpassword, PASSWORD_DEFAULT);
+            $user->save();
+
+            $this->flash->addMessage('success', "Votre mot de passe a été modifié.");
+            $response = $response->withRedirect($this->router->pathFor('app.account'));
+        } catch (Exception $e) {
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor("app.account"));
+        }
+        return $response;
+    }
+
     public function logout(Request $request, Response $response, array $args): Response {
         Auth::logout();
 

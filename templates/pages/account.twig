@@ -1,1 +1,121 @@
-Hello {{ auth.user.firstname }}
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>CESI - Mon Compte</title>
+        <link rel="stylesheet" href="{{ base_url() }}/assets/css/bootstrap.min.css">
+    </head>
+    <body>
+
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ path_for('app.account') }}">CESI</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" aria-current="page" href="{{ path_for('app.account') }}">Mon compte</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <main class="container-fluid my-5">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="card-title text-center">Mon compte</h2>
+                    <hr>
+                    {% include 'layouts/flash.twig' %}
+                    <div class="row row-cards row-deck">
+                        <div class="col-lg-6">
+                            <form class="card" method="POST" action="{{ path_for('app.account.submit') }}">
+                                <div class="card-body">
+                                    <h3 class="card-title">Modifier mon profil</h3>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Identifiant</label>
+                                                <input type="text" class="form-control" placeholder="Nom d'utilisateur" name="username" value="{{ auth.user.username }}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Adresse e-mail</label>
+                                                <input type="email" class="form-control" placeholder="Adresse e-mail" name="email" value="{{ auth.user.email }}" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Nom</label>
+                                                <input type="text" class="form-control" placeholder="Nom" name="lastname" value="{{ auth.user.lastname }}" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Prénom</label>
+                                                <input type="text" class="form-control" placeholder="Prénom" name="firstname" value="{{ auth.user.firstname }}" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Adresse</label>
+                                                <input type="text" id="inputAddress" class="form-control" placeholder="Adresse" name="address" value="{{ auth.user.address }}" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-right">
+                                    <button type="submit" class="btn btn-primary">Modifier mon profil</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-6">
+                            <form class="card" method="POST" action="{{ path_for('app.account.password.submit') }}">
+                                <div class="card-body">
+                                    <h3 class="card-title">Modifier mon mot de passe</h3>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Mot de passe actuel</label>
+                                                <input type="password" class="form-control" placeholder="Mot de passe actuel" name="password">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Nouveau mot de passe</label>
+                                                <input type="password" class="form-control" placeholder="Nouveau mot de passe" name="newpassword">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Conf. nouveau mot de passe</label>
+                                                <input type="password" class="form-control" placeholder="Confirmation nouveau mot de passe" name="newpassword_conf">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-right">
+                                    <button type="submit" class="btn btn-primary">Modifier mon mot de passe</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <script src="https://cdn.jsdelivr.net/npm/places.js@1.19.0"></script>
+        <script>
+            let placesAutocomplete = places({
+                container: document.querySelector('#inputAddress')
+            });
+        </script>
+        <script src="{{ base_url() }}/assets/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
