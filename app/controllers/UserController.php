@@ -12,6 +12,7 @@ use Slim\Http\Response;
 class UserController extends Controller{
     public function register(Request $request, Response $response, array $args): Response {
         $this->render($response, 'templates/pages/register.twig');
+        return $response;
     }
 
     public function postRegister(Request $request, Response $response, array $args): Response {
