@@ -17,6 +17,11 @@ class UserController extends Controller{
         return $response;
     }
 
+    public function account(Request $request, Response $response, array $args): Response {
+        $this->view->render($response, 'pages/account.twig');
+        return $response;
+    }
+
     public function postLogin(Request $request, Response $response, array $args): Response {
         try {
             if (Auth::check()) {
