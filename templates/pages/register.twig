@@ -11,9 +11,13 @@
 <main class="form-signin">
     <form method="POST" action="{{ path_for("app.register.submit") }}">
         <img class="mb-4" src="{{ base_url() }}/assets/images/logo.png" width="300" height="180">
+        {% include 'layouts/flash.twig' %}
         <h1 class="h3 mb-3 fw-normal">Inscription</h1>
         <label for="inputEmail" class="visually-hidden">Adresse e-mail</label>
         <input type="email" id="inputEmail" class="form-control" placeholder="Adresse mail" name="email" required autofocus>
+
+        <label for="inputLastname" class="visually-hidden">Nom d'utilisateur</label>
+        <input type="text" id="inputLastname" class="form-control" placeholder="Nom d'utilisateur" name="username" required>
 
         <label for="inputLastname" class="visually-hidden">Nom</label>
         <input type="text" id="inputLastname" class="form-control" placeholder="Nom" name="lastname" required>
@@ -25,7 +29,7 @@
         <input type="text" id="inputAddress" class="form-control" placeholder="Adresse" name="address" required>
 
         <label for="inputPassword" class="visually-hidden">Mot de Passe</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Mot de Passe" name="firstname" required>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Mot de Passe" name="password" required>
 
         <label for="inputPasswordConf" class="visually-hidden">Confirmez le Mot de passe</label>
         <input type="password" id="inputPasswordConf" class="form-control" placeholder="Confirmez le Mot de passe" name="password_conf" required>

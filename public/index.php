@@ -3,6 +3,7 @@
 use app\controllers\AppController;
 use app\controllers\UserController;
 use app\extensions\TwigMessages;
+use app\helpers\Auth;
 use Dotenv\Dotenv;
 use Illuminate\Database\Capsule\Manager;
 use Slim\App;
@@ -45,6 +46,11 @@ $container['flash'] = function () {
 $container['view'] = function ($container) {
     $view = new Twig(__DIR__ . '/../templates', [
         'cache' => false
+    ]);
+
+    $view->getEnvironment()->addGlobal('auth', [
+        'check' => Auth::check(),
+        'user' => Auth::user()
     ]);
 
     $view->addExtension(new TwigExtension($container->router, Uri::createFromEnvironment(new Environment($_SERVER))));
