@@ -74,6 +74,6 @@ $app->group('/admin', function(App $app){
     $this->get('/', AdminController::class . ':admin')->setName('app.admin');
     $this->get('/delete/{id}', AdminController::class .':deleteUser')->setName('app.admin.delete');
     $this->post('/update/{id:[0-9]+}', AdminController::class . ':postUpdateUser')->setName('app.admin.user.update.submit');
-    $this->get('/update/{id:[0-9]+}', AdminController::class . ':pdateUser')->setName('app.admin.user.update');
+    $this->get('/update/{id:[0-9]+}', AdminController::class . ':UpdateUser')->setName('app.admin.user.update');
 });
 $app->run();
