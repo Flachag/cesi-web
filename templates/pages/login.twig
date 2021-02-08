@@ -9,16 +9,18 @@
     </head>
     <body class="text-center">
         <main class="form-signin">
-            <form method="POST" action="#">
+            <form method="POST" action="{{ path_for('app.login.submit') }}">
                 <img class="mb-4" src="{{ base_url() }}/assets/images/logo.png" width="300" height="180">
+                {% include 'layouts/flash.twig' %}
                 <h1 class="h3 mb-3 fw-normal">Connexion</h1>
                 <label for="inputEmail" class="visually-hidden">Adresse e-mail ou nom d'utilisateur</label>
-                <input type="email" id="inputEmail" class="form-control" placeholder="Identifiant" name="login" required autofocus>
+                <input type="text" id="inputEmail" class="form-control" placeholder="Identifiant" name="login" required autofocus>
                 <label for="inputPassword" class="visually-hidden">Mot de passe</label>
                 <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" name="password" required>
                 <button class="w-100 btn btn-lg btn-primary" type="submit">Connexion</button>
             </form>
         </main>
 
+        <script src="{{ base_url() }}/assets/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

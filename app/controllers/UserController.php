@@ -31,7 +31,7 @@ class UserController extends Controller{
             $response = $response->withRedirect($this->router->pathFor('app.account'));
         } catch (Exception $e) {
             $this->flash->addMessage('error', $e->getMessage());
-            $response = $response->withRedirect($this->router->pathFor('app.home'));
+            $response = $response->withRedirect($this->router->pathFor('app.login'));
         }
         return $response;
     }
