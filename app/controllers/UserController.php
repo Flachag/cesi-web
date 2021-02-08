@@ -9,7 +9,7 @@ use Exception;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class UsersController extends Controller{
+class UserController extends Controller{
     public function register(Request $request, Response $response, array $args): Response {
         $this->render($response, 'templates/pages/register.twig');
     }

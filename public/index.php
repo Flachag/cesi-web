@@ -1,6 +1,7 @@
 <?php
 
 use app\controllers\AppController;
+use app\controllers\UserController;
 use app\extensions\TwigMessages;
 use Dotenv\Dotenv;
 use Illuminate\Database\Capsule\Manager;
@@ -53,5 +54,5 @@ $container['view'] = function ($container) {
 };
 
 $app->get("/", AppController::class . ':home')->setName("app.home");
-
+$app->get("/register", UserController::class . ':register')->setName("app.register");
 $app->run();
