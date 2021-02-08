@@ -41,7 +41,8 @@ class AdminController extends Controller{
     public function updateUser(Request $request, Response $response, array $args): Response{
         $admin = Auth::user();
         if($admin->level == 1) {
-            $this->view->render($response, 'pages/admin/update.twig');
+            $user = User::where('id', $args['id'])->firstOrFail();
+            $this->view->render($response, 'pages/admin/update.twig', ['user' => $user]);
         } else {
             $this->flash->addMessage('error', "Vous n'avez pas les droits pour effectuer cette action.");
             $response = $response->withRedirect($this->router->pathFor('app.home'));
