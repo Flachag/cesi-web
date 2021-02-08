@@ -60,6 +60,6 @@ $app->post("/login", UserController::class . ':postLogin')->setName("app.login.s
 $app->post("/register", UserController::class . ':postRegister')->setName("app.register.submit");
 
 $app->group('', function (App $app) {
-    $app->get('/account', UserController::class . ':account')->setName('app.acount');
+    $app->get('/account', UserController::class . ':account')->setName('app.account');
 });
 $app->run();
