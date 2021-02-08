@@ -1,5 +1,6 @@
 <?php
 
+use app\controllers\AdminController;
 use app\controllers\AppController;
 use app\controllers\UserController;
 use app\extensions\TwigMessages;
@@ -67,5 +68,12 @@ $app->post("/register", UserController::class . ':postRegister')->setName("app.r
 
 $app->group('', function (App $app) {
     $app->get('/account', UserController::class . ':account')->setName('app.account');
+});
+
+$app->group('/admin', function(App $app){
+    $this->get('/', AdminController::class . ':admin')->setName('app.admin');
+    $this->get('/delete/{id}', AdminController::class .':deleteUser')->setName('app.admin.delete');
+    $this->post('/update/{id:[0-9]+}', AdminController::class . ':postUpdateUser')->setName('app.admin.user.update.submit');
+    $this->get('/update/{id:[0-9]+}', AdminController::class . ':pdateUser')->setName('app.admin.user.update');
 });
 $app->run();
