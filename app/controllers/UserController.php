@@ -4,6 +4,7 @@
 namespace app\controllers;
 
 
+use app\helpers\Auth;
 use app\models\User;
 use Exception;
 use Slim\Http\Request;
@@ -13,6 +14,25 @@ class UserController extends Controller{
 
     public function login(Request $request, Response $response, array $args): Response {
         $this->view->render($response, 'pages/login.twig');
+        return $response;
+    }
+
+    public function postLogin(Request $request, Response $response, array $args): Response {
+        try {
+            if (Auth::check()) {
+                throw new Exception("Impossible de se connecter, vous êtes déjà connecté.");
+            }
+
+            $login = filter_var($request->getParsedBodyParam('login'), FILTER_SANITIZE_STRING);
+            $password = filter_var($request->getParsedBodyParam('password'), FILTER_SANITIZE_STRING);
+
+            if (!Auth::attempt($login, $password)) throw new Exception("Identifiant ou mot de passe invalide.");
+
+            $response = $response->withRedirect($this->router->pathFor('app.account'));
+        } catch (Exception $e) {
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor('app.home'));
+        }
         return $response;
     }
 
