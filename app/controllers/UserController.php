@@ -12,6 +12,13 @@ use Slim\Http\Response;
 
 class UserController extends Controller{
 
+    public function logout(Request $request, Response $response, array $args): Response {
+        Auth::logout();
+
+        $this->flash->addMessage('success', 'Vous avez bien été déconnecté');
+        return $response->withRedirect($this->router->pathFor('app.login'));
+    }
+
     public function login(Request $request, Response $response, array $args): Response {
         $this->view->render($response, 'pages/login.twig');
         return $response;
