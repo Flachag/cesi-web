@@ -55,5 +55,7 @@ $container['view'] = function ($container) {
 
 $app->get("/", AppController::class . ':home')->setName("app.home");
 $app->get("/register", UserController::class . ':register')->setName("app.register");
+$app->get("/login", UserController::class . ':login')->setName("app.login");
+
 $app->post("/postRegister", UserController::class . ':postRegister')->setName("app.postRegister");
 $app->run();

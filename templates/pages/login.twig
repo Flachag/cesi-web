@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>CESI - Connexion</title>
+        <link rel="stylesheet" href="{{ base_url() }}/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{{ base_url() }}/assets/css/login.css">
+    </head>
+    <body class="text-center">
+        <main class="form-signin">
+            <form method="POST" action="#">
+                <img class="mb-4" src="{{ base_url() }}/assets/images/logo.png" width="300" height="180">
+                <h1 class="h3 mb-3 fw-normal">Connexion</h1>
+                <label for="inputEmail" class="visually-hidden">Adresse e-mail ou nom d'utilisateur</label>
+                <input type="email" id="inputEmail" class="form-control" placeholder="Identifiant" name="login" required autofocus>
+                <label for="inputPassword" class="visually-hidden">Mot de passe</label>
+                <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" name="password" required>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Connexion</button>
+            </form>
+        </main>
+
+    </body>
+</html>

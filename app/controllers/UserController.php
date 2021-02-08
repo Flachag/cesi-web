@@ -10,6 +10,12 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 class UserController extends Controller{
+
+    public function login(Request $request, Response $response, array $args): Response {
+        $this->view->render($response, 'pages/login.twig');
+        return $response;
+    }
+
     public function register(Request $request, Response $response, array $args): Response {
         $this->render($response, 'templates/pages/register.twig');
         return $response;
