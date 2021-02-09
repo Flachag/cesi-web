@@ -62,6 +62,7 @@ $container['view'] = function ($container) {
 };
 
 $app->get("/", AppController::class . ':home')->setName("app.home");
+$app->get("/verify/{token}", UserController::class . ':verifyToken')->setName("app.verify");
 $app->get("/register", UserController::class . ':register')->setName("app.register");
 $app->get("/login", UserController::class . ':login')->setName("app.login");
 $app->post("/login", UserController::class . ':postLogin')->setName("app.login.submit");

@@ -15,6 +15,7 @@ class Auth {
         try {
             $user = User::where('username', '=', $username)->orWhere('email', '=', $username)->firstOrFail();
             if (!password_verify($password, $user->password)) throw new Exception();
+            if(!is_null($user->token)) throw new Exception();
             $_SESSION['user'] = $user;
             return true;
         } catch (Exception $e) {

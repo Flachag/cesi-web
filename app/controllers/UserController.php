@@ -15,6 +15,22 @@ use Slim\Http\Response;
 class UserController extends Controller{
 
 
+    public function verifyToken(Request $request, Response $response, array $args): Response {
+        try {
+            $token = filter_var($args['token'], FILTER_SANITIZE_STRING);
+            $user = User::where('token', $token)->firstOrFail();
+            $user->token = null;
+            $user->save();
+            $this->flash->addMessage('success', "Votre compte a été validé, vous pouvez désormais vous connecter");
+            return $response = $response->withRedirect($this->router->pathFor('app.login'));
+        } catch (Exception $e) {
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor("app.login"));
+        }
+
+        return $response;
+    }
+
     public function updateAccount(Request $request, Response $response, array $args): Response {
         try {
             $firstname = filter_var($request->getParsedBodyParam('firstname'), FILTER_SANITIZE_STRING);
@@ -90,7 +106,7 @@ class UserController extends Controller{
             $login = filter_var($request->getParsedBodyParam('login'), FILTER_SANITIZE_STRING);
             $password = filter_var($request->getParsedBodyParam('password'), FILTER_SANITIZE_STRING);
 
-            if (!Auth::attempt($login, $password)) throw new Exception("Identifiant ou mot de passe invalide.");
+            if (!Auth::attempt($login, $password)) throw new Exception("Identifiant ou mot de passe invalide. Avez-vous activé votre compte?");
 
             $response = $response->withRedirect($this->router->pathFor('app.account'));
         } catch (Exception $e) {
@@ -127,6 +143,7 @@ class UserController extends Controller{
             $user->lastname = $lastname;
             $user->firstname = $firstname;
             $user->username = $username;
+            $user->token = sha1($username . time());
             $user->email = $email;
             $user->address = $address;
             $user->password = password_hash($password, PASSWORD_DEFAULT);
@@ -149,9 +166,9 @@ class UserController extends Controller{
                 $mail->addAddress($email, $firstname . ' ' . $lastname);
 
                 // Content
-                $mail->isHTML(true);                                  // Set email format to HTML
+                $mail->isHTML(true);
                 $mail->Subject = 'CESI - Votre inscription';
-                $mail->Body    = '<b>MERCI</b> pour votre <i>inscription</i>.';
+                $mail->Body    = '<b>MERCI</b> pour votre <i>inscription</i>. <a href="http://cesi-web.local/verify/'. $user->token . '">Cliquez ici pour valider votre inscription.</a>';
                 $mail->AltBody = 'Utilisez un client mail qui accepte le HTML....';
 
                 $mail->send();

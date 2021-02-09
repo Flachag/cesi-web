@@ -16,6 +16,7 @@ class User extends Model {
         'username',
         'password',
         'email',
+        'token',
         'firstname',
         'lastname',
         'address',
