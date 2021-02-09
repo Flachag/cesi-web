@@ -23,7 +23,7 @@ date_default_timezone_set('Europe/Paris');
 
 $env = Dotenv::createImmutable(__DIR__ . '/../');
 $env->load();
-$env->required(['DB_HOST', 'DB_PORT', 'DB_NAME', 'DB_USER', 'DB_PASSWORD', 'AWS_ENDPOINT', 'AWS_REGION', 'AWS_BUCKET']);
+$env->required(['DB_HOST', 'DB_PORT', 'DB_NAME', 'DB_USER', 'DB_PASSWORD', 'AWS_ENDPOINT', 'AWS_REGION', 'AWS_BUCKET', 'MAIL_HOST', 'MAIL_PORT', 'MAIL_USER', 'MAIL_PASSWORD']);
 
 $db = new Manager();
 $db->addConnection([

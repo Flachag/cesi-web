@@ -21,7 +21,8 @@
     "slim/twig-view": "^2.5",
     "php": "^7.4",
     "twig/intl-extra": "^3.0",
-    "illuminate/database": "^8.26"
+    "illuminate/database": "^8.26",
+    "phpmailer/phpmailer": "^6.2"
   },
   "autoload": {
     "psr-4": {

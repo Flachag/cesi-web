@@ -7,6 +7,8 @@ namespace app\controllers;
 use app\helpers\Auth;
 use app\models\User;
 use Exception;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -129,6 +131,33 @@ class UserController extends Controller{
             $user->address = $address;
             $user->password = password_hash($password, PASSWORD_DEFAULT);
             $user->save();
+
+            $mail = new PHPMailer(true);
+
+            try {
+                //Server settings
+                $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+                $mail->isSMTP();
+                $mail->Host       = $_ENV['MAIL_HOST'];
+                $mail->SMTPAuth   = true;
+                $mail->Username   = $_ENV['MAIL_USER'];
+                $mail->Password   = $_ENV['MAIL_PASSWORD'];
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port       = $_ENV['MAIL_PORT'];
+
+                $mail->setFrom('jules.sayer@apitech-solution.com', 'Jules Sayer');
+                $mail->addAddress($email, $firstname . ' ' . $lastname);
+
+                // Content
+                $mail->isHTML(true);                                  // Set email format to HTML
+                $mail->Subject = 'CESI - Votre inscription';
+                $mail->Body    = '<b>MERCI</b> pour votre <i>inscription</i>.';
+                $mail->AltBody = 'Utilisez un client mail qui accepte le HTML....';
+
+                $mail->send();
+            } catch (Exception $e) {
+
+            }
 
             $this->flash->addMessage('success', "Inscription validée, vous pouvez vous connecter.");
             $response = $response->withRedirect($this->router->pathFor('app.login'));
