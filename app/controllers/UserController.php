@@ -6,6 +6,7 @@ namespace app\controllers;
 
 use app\helpers\Auth;
 use app\models\User;
+use Aws\S3\S3Client;
 use Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
@@ -181,6 +182,65 @@ class UserController extends Controller{
         } catch (\Exception $e){
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor("app.register"));
+        }
+        return $response;
+    }
+
+    public function uploadImage(Request $request, Response $response, array $args): Response{
+        try{
+            if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
+                $user = Auth::user();
+                $file_name = $_FILES['file']['name'];
+                $temp_file_location = $_FILES['file']['tmp_name'];
+                $ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+                $size = $_FILES['file']['size'];
+                $check = getimagesize($temp_file_location);
+
+                $allowed_extensions = ['tif', 'tiff', 'bmp', 'jpg', 'jpeg', 'gif', 'png', 'raw', 'cr2', 'webp', 'svg', 'heic'];
+                $maxsize = 25000000;
+
+                if (!in_array($ext, $allowed_extensions)) {
+                    throw new Exception('Extension non permise.');
+                }
+
+                if ($size > $maxsize) {
+                    throw new Exception('Le fichier est trop volumineux.');
+                }
+
+                if ($check == false) {
+                    throw new Exception("Le ficher n'est pas une image.");
+                }
+
+                $bucket = env('AWS_BUCKET');
+
+                //Create a S3Client
+                $s3 = new S3Client([
+                    'region' => $_ENV['AWS_REGION'],
+                    'version' => 'latest',
+                    'endpoint' => $_ENV['AWS_ENDPOINT'],
+                    'credentials' => [
+                        'key' => $_ENV['AWS_ACCESS_KEY_ID'],
+                        'secret' => $_ENV['AWS_SECRET_ACCESS_KEY']
+                    ]
+                ]);
+
+                $data = file_get_contents($temp_file_location);
+                $base64 = 'data:image/' . $ext . ';base64,' . base64_encode($data);
+                $hash = hash('sha1',date('ATOM'));
+                $myfile = fopen(__DIR__.'/../../tmp/'.$hash, "c");
+                fwrite($myfile, $base64);
+                $s3->putObject([
+                    'Bucket' => $_ENV['AWS_BUCKET'],
+                    'Key' => $user->username .'/profile',
+                    'SourceFile' => __DIR__.'/../../tmp/'.$hash
+                ]);
+                unlink(__DIR__.'/../../tmp/'.$hash);
+            } else {
+                throw new Exception('');
+            }
+        } catch (Exception $e){
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor("app.account"));
         }
         return $response;
     }

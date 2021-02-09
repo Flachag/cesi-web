@@ -22,7 +22,8 @@
     "php": "^7.4",
     "twig/intl-extra": "^3.0",
     "illuminate/database": "^8.26",
-    "phpmailer/phpmailer": "^6.2"
+    "phpmailer/phpmailer": "^6.2",
+    "aws/aws-sdk-php": "^3.173"
   },
   "autoload": {
     "psr-4": {

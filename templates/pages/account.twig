@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>CESI - Mon Compte</title>
         <link rel="stylesheet" href="{{ base_url() }}/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{{ base_url() }}/assets/css/dropzone.css">
     </head>
     <body>
 
@@ -59,6 +60,7 @@
                                 </div>
                             </form>
                         </div>
+
                         <div class="col-lg-6">
                             <form class="card" method="POST" action="{{ path_for('app.account.password.submit') }}">
                                 <div class="card-body">
@@ -93,6 +95,13 @@
                 </div>
             </div>
 
+            <div class="col-12">
+                <form class="dropzone" action="{{ path_for('app.account.image.submit') }}" method="post" enctype="multipart/form-data">
+                    <div class="fallback">
+                        <input name="file" type="file"/>
+                    </div>
+                </form>
+            </div>
         </main>
 
         <script src="https://cdn.jsdelivr.net/npm/places.js@1.19.0"></script>
@@ -102,5 +111,6 @@
             });
         </script>
         <script src="{{ base_url() }}/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="{{ base_url() }}/assets/js/dropzone.js"></script>
     </body>
 </html>
