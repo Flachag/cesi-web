@@ -5,6 +5,7 @@ use app\controllers\AppController;
 use app\controllers\UserController;
 use app\extensions\TwigMessages;
 use app\helpers\Auth;
+use app\middlewares\AuthMiddleware;
 use Dotenv\Dotenv;
 use Illuminate\Database\Capsule\Manager;
 use Slim\App;
@@ -22,7 +23,7 @@ date_default_timezone_set('Europe/Paris');
 
 $env = Dotenv::createImmutable(__DIR__ . '/../');
 $env->load();
-$env->required(['DB_HOST', 'DB_PORT', 'DB_NAME', 'DB_USER', 'DB_PASSWORD']);
+$env->required(['DB_HOST', 'DB_PORT', 'DB_NAME', 'DB_USER', 'DB_PASSWORD', 'AWS_ENDPOINT', 'AWS_REGION', 'AWS_BUCKET']);
 
 $db = new Manager();
 $db->addConnection([
@@ -71,12 +72,12 @@ $app->group('', function (App $app) {
     $app->post('/account', UserController::class . ':updateAccount')->setName('app.account.submit');
     $app->post('/account/password', UserController::class . ':updatePassword')->setName('app.account.password.submit');
     $app->get('/logout', UserController::class . ':logout')->setName('app.logout');
-});
+})->add(new AuthMiddleware($container));
 
-$app->group('/admin', function(App $app){
+$app->group('/admin', function(App $app) {
     $this->get('/', AdminController::class . ':admin')->setName('app.admin');
     $this->get('/delete/{id}', AdminController::class .':deleteUser')->setName('app.admin.delete');
     $this->post('/update/{id:[0-9]+}', AdminController::class . ':postUpdateUser')->setName('app.admin.user.update.submit');
     $this->get('/update/{id:[0-9]+}', AdminController::class . ':UpdateUser')->setName('app.admin.user.update');
-});
+})->add(new AuthMiddleware($container));
 $app->run();
